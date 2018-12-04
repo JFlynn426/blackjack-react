@@ -17,7 +17,8 @@ class player extends Component {
     return (
       <div>
         <ul class="player" />
-        <button class="hit">hit</button> <button class="stay">stay</button>
+        
+        <button onClick={this.dealCardToPlayer}>hit</button> <button class="stay">stay</button>
             <section id="playerScore">0</section>
       </div>
     );
