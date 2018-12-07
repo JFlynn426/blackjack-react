@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import cards from './images/cards.jpg'
+import imageForFaceAndSuit from './Cards'
 import blackjackName from './images/blackjack-name.jpg'
 import './App.css'
-class player extends Component {
+import update from 'immutability-helper'
+
+class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -60,53 +62,139 @@ class player extends Component {
         { face: 'king', value: 10, suit: 'diamonds' },
         { face: 'ace', value: 11, suit: 'diamonds' }
       ],
-      playerHand: [],
-      dealerHand: []
+      player: [],
+      dealer: [],
+      playerScore: 0,
+      dealerScore: 0,
+      playing: true,
+      gameResults: 'Play a game!'
     }
   }
   shuffle = () => {
+    let newArray = update(this.state.deck, {})
+
     for (let index = 52 - 1; index > 1; index -= 1) {
       let otherIndex = Math.floor(Math.random() * index)
 
       let firstCard = this.state.deck[index]
       let secondCard = this.state.deck[otherIndex]
 
-      this.state.deck[index] = secondCard
-      this.state.deck[otherIndex] = firstCard
+      newArray[index] = secondCard
+      newArray[otherIndex] = firstCard
+    }
+
+    this.setState({
+      deck: newArray
+    })
+  }
+  componentDidMount = async () => {
+    this.shuffle()
+    await this.dealCard(2, 'player')
+    await this.dealCard(2, 'dealer')
+  }
+
+  componentDidUpdate = () => {
+    if (this.state.playerScore > 21 && this.state.playing) {
+      this.setState({
+        gameResults: 'Player Busted!',
+        playing: false
+      })
+    }
+    if (this.state.dealerScore > 21 && this.state.playing) {
+      this.setState({
+        gameResults: 'Dealer Busted!',
+        playing: false
+      })
     }
   }
-  dealCardToPlayer = () => {
-    let card = this.state.deck.pop()
-    this.state.playerHand.push(card)
+
+  stayButton = async () => {
+    while (this.state.dealerScore <= 17 && this.state.playing) {
+      await this.dealCard(1, 'dealer')
+    }
+    if (
+      this.state.playerScore <= this.state.dealerScore &&
+      this.state.playing
+    ) {
+      this.setState({
+        gameResults: 'Dealer Wins!',
+        playing: false
+      })
+    }
+    if (this.state.playerScore > this.state.dealerScore && this.state.playing) {
+      this.setState({
+        gameResults: 'Player Wins!',
+        playing: false
+      })
+    }
   }
-}
-class App extends Component {
+  dealCard = async (count, recipient) => {
+    if (this.state.playing === true) {
+      let cards = []
+      let total = 0
+
+      for (let iterations = 0; iterations < count; iterations++) {
+        const card = this.state.deck[iterations]
+        cards.push(card)
+        total += card.value
+      }
+
+      const score = `${recipient}Score`
+      const newState = {
+        [score]: this.state[score] + total,
+        deck: update(this.state.deck, { $splice: [[0, count]] }),
+        [recipient]: update(this.state[recipient], { $push: cards })
+      }
+
+      await this.setState(newState)
+    }
+  }
+
   render() {
     return (
       <div className="App">
-        <body>
-          <header>
-            <title>Blackjack</title>
-            <img class="title" src={blackjackName} height="100" />
-          </header>
-          <section class="hands">
-            <ul class="player" />
-            {this.state.playerHand.map(card => {
+        <header>
+          <title>Blackjack</title>
+          <img className="title" src={blackjackName} height="100" />
+        </header>
+        <h1>{this.state.gameResults}</h1>
+        <section className="controls">
+          <button
+            onClick={() => this.dealCard(1, 'player', 'playerScore')}
+            className="button"
+          >
+            HIT
+          </button>
+          <button className="button" onClick={() => this.stayButton()}>
+            STAY
+          </button>
+        </section>
+        <section className="scores">
+          <p>Player Score Is: {this.state.playerScore}</p>
+          <p>Dealer Score Is: {this.state.dealerScore}</p>
+        </section>
+        <section className="hands">
+          <ul className="player">
+            {this.state.player.map((card, index) => {
               return (
-                <li>
-                  `${card.face} of ${card.suit}`
-                </li>
+                <img
+                  alt={index}
+                  src={imageForFaceAndSuit(card.face, card.suit)}
+                />
               )
             })}
-            <button onClick={this.dealCardToPlayer} class="hit">
-              hit
-            </button>{' '}
-            <button class="stay">stay</button>
-            <section id="playerScore">0</section>
-            <ul class="dealer" />
-            <section id="dealerScore">0</section>
-          </section>
-        </body>
+          </ul>
+          <ul className="dealer">
+            {this.state.dealer.map((card, index) => {
+              return (
+                <img
+                  alt={index}
+                  src={imageForFaceAndSuit(card.face, card.suit)}
+                />
+              )
+            })}
+          </ul>
+        </section>
       </div>
     )
   }

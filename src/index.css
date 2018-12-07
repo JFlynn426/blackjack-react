@@ -21,4 +21,41 @@ header {
 }
 .hands {
   display: flex;
+  justify-content: space-around;
+}
+
+.hands img {
+  max-width: 100px;
+  margin: 10px;
+}
+.controls {
+  display: flex;
+  justify-content: space-around;
+}
+.button {
+  font-size: 40px;
+  margin: 25px;
+  background-color: black;
+  color: white;
+  border-radius: 8px;
+  min-width: 150px;
+}
+.scores {
+  display: flex;
+  justify-content: space-around;
+}
+p {
+  font-size: 20px;
+}
+.hands {
+  z-index: 1;
+  top: 0;
+}
+.player {
+  left: 0;
+  width: 50%;
+}
+.dealer {
+  right: 0;
+  width: 50%;
 }
