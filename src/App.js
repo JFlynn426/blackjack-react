@@ -168,8 +168,7 @@ class App extends Component {
     }
   }
   newGame = async () => {
-    this.setState(this.newState)
-    await this.newGame()
+    this.setState(this.newState, this.startGame)
   }
 
   render() {
