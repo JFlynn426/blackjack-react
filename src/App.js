@@ -5,70 +5,71 @@ import './App.css'
 import update from 'immutability-helper'
 
 class App extends Component {
+  newState = {
+    deck: [
+      { face: '2', value: 2, suit: 'spades' },
+      { face: '3', value: 3, suit: 'spades' },
+      { face: '4', value: 4, suit: 'spades' },
+      { face: '5', value: 5, suit: 'spades' },
+      { face: '6', value: 6, suit: 'spades' },
+      { face: '7', value: 7, suit: 'spades' },
+      { face: '8', value: 8, suit: 'spades' },
+      { face: '9', value: 9, suit: 'spades' },
+      { face: '10', value: 10, suit: 'spades' },
+      { face: 'jack', value: 10, suit: 'spades' },
+      { face: 'queen', value: 10, suit: 'spades' },
+      { face: 'king', value: 10, suit: 'spades' },
+      { face: 'ace', value: 11, suit: 'spades' },
+      { face: '2', value: 2, suit: 'hearts' },
+      { face: '3', value: 3, suit: 'hearts' },
+      { face: '4', value: 4, suit: 'hearts' },
+      { face: '5', value: 5, suit: 'hearts' },
+      { face: '6', value: 6, suit: 'hearts' },
+      { face: '7', value: 7, suit: 'hearts' },
+      { face: '8', value: 8, suit: 'hearts' },
+      { face: '9', value: 9, suit: 'hearts' },
+      { face: '10', value: 10, suit: 'hearts' },
+      { face: 'jack', value: 10, suit: 'hearts' },
+      { face: 'queen', value: 10, suit: 'hearts' },
+      { face: 'king', value: 10, suit: 'hearts' },
+      { face: 'ace', value: 11, suit: 'hearts' },
+      { face: '2', value: 2, suit: 'clubs' },
+      { face: '3', value: 3, suit: 'clubs' },
+      { face: '4', value: 4, suit: 'clubs' },
+      { face: '5', value: 5, suit: 'clubs' },
+      { face: '6', value: 6, suit: 'clubs' },
+      { face: '7', value: 7, suit: 'clubs' },
+      { face: '8', value: 8, suit: 'clubs' },
+      { face: '9', value: 9, suit: 'clubs' },
+      { face: '10', value: 10, suit: 'clubs' },
+      { face: 'jack', value: 10, suit: 'clubs' },
+      { face: 'queen', value: 10, suit: 'clubs' },
+      { face: 'king', value: 10, suit: 'clubs' },
+      { face: 'ace', value: 11, suit: 'clubs' },
+      { face: '2', value: 2, suit: 'diamonds' },
+      { face: '3', value: 3, suit: 'diamonds' },
+      { face: '4', value: 4, suit: 'diamonds' },
+      { face: '5', value: 5, suit: 'diamonds' },
+      { face: '6', value: 6, suit: 'diamonds' },
+      { face: '7', value: 7, suit: 'diamonds' },
+      { face: '8', value: 8, suit: 'diamonds' },
+      { face: '9', value: 9, suit: 'diamonds' },
+      { face: '10', value: 10, suit: 'diamonds' },
+      { face: 'jack', value: 10, suit: 'diamonds' },
+      { face: 'queen', value: 10, suit: 'diamonds' },
+      { face: 'king', value: 10, suit: 'diamonds' },
+      { face: 'ace', value: 11, suit: 'diamonds' }
+    ],
+    player: [],
+    dealer: [],
+    playerScore: 0,
+    dealerScore: 0,
+    playing: true,
+    gameResults: 'Play a game!'
+  }
   constructor(props) {
     super(props)
-    this.state = {
-      deck: [
-        { face: '2', value: 2, suit: 'spades' },
-        { face: '3', value: 3, suit: 'spades' },
-        { face: '4', value: 4, suit: 'spades' },
-        { face: '5', value: 5, suit: 'spades' },
-        { face: '6', value: 6, suit: 'spades' },
-        { face: '7', value: 7, suit: 'spades' },
-        { face: '8', value: 8, suit: 'spades' },
-        { face: '9', value: 9, suit: 'spades' },
-        { face: '10', value: 10, suit: 'spades' },
-        { face: 'jack', value: 10, suit: 'spades' },
-        { face: 'queen', value: 10, suit: 'spades' },
-        { face: 'king', value: 10, suit: 'spades' },
-        { face: 'ace', value: 11, suit: 'spades' },
-        { face: '2', value: 2, suit: 'hearts' },
-        { face: '3', value: 3, suit: 'hearts' },
-        { face: '4', value: 4, suit: 'hearts' },
-        { face: '5', value: 5, suit: 'hearts' },
-        { face: '6', value: 6, suit: 'hearts' },
-        { face: '7', value: 7, suit: 'hearts' },
-        { face: '8', value: 8, suit: 'hearts' },
-        { face: '9', value: 9, suit: 'hearts' },
-        { face: '10', value: 10, suit: 'hearts' },
-        { face: 'jack', value: 10, suit: 'hearts' },
-        { face: 'queen', value: 10, suit: 'hearts' },
-        { face: 'king', value: 10, suit: 'hearts' },
-        { face: 'ace', value: 11, suit: 'hearts' },
-        { face: '2', value: 2, suit: 'clubs' },
-        { face: '3', value: 3, suit: 'clubs' },
-        { face: '4', value: 4, suit: 'clubs' },
-        { face: '5', value: 5, suit: 'clubs' },
-        { face: '6', value: 6, suit: 'clubs' },
-        { face: '7', value: 7, suit: 'clubs' },
-        { face: '8', value: 8, suit: 'clubs' },
-        { face: '9', value: 9, suit: 'clubs' },
-        { face: '10', value: 10, suit: 'clubs' },
-        { face: 'jack', value: 10, suit: 'clubs' },
-        { face: 'queen', value: 10, suit: 'clubs' },
-        { face: 'king', value: 10, suit: 'clubs' },
-        { face: 'ace', value: 11, suit: 'clubs' },
-        { face: '2', value: 2, suit: 'diamonds' },
-        { face: '3', value: 3, suit: 'diamonds' },
-        { face: '4', value: 4, suit: 'diamonds' },
-        { face: '5', value: 5, suit: 'diamonds' },
-        { face: '6', value: 6, suit: 'diamonds' },
-        { face: '7', value: 7, suit: 'diamonds' },
-        { face: '8', value: 8, suit: 'diamonds' },
-        { face: '9', value: 9, suit: 'diamonds' },
-        { face: '10', value: 10, suit: 'diamonds' },
-        { face: 'jack', value: 10, suit: 'diamonds' },
-        { face: 'queen', value: 10, suit: 'diamonds' },
-        { face: 'king', value: 10, suit: 'diamonds' },
-        { face: 'ace', value: 11, suit: 'diamonds' }
-      ],
-      player: [],
-      dealer: [],
-      playerScore: 0,
-      dealerScore: 0,
-      playing: true,
-      gameResults: 'Play a game!'
-    }
+    this.state = this.newState
   }
   shuffle = () => {
     let newArray = update(this.state.deck, {})
@@ -87,7 +88,10 @@ class App extends Component {
       deck: newArray
     })
   }
-  componentDidMount = async () => {
+  componentDidMount = () => {
+    this.startGame()
+  }
+  startGame = async () => {
     this.shuffle()
     await this.dealCard(2, 'player')
     await this.dealCard(2, 'dealer')
@@ -149,24 +153,45 @@ class App extends Component {
       await this.setState(newState)
     }
   }
+  playing = () => {
+    if (this.state.playing === false) {
+      return 'hidden'
+    } else {
+      return 'button'
+    }
+  }
+  notPlaying = () => {
+    if (this.state.playing === true) {
+      return 'hidden'
+    } else {
+      return 'button'
+    }
+  }
+  newGame = async () => {
+    this.setState(this.newState)
+    await this.newGame()
+  }
 
   render() {
     return (
       <div className="App">
         <header>
           <title>Blackjack</title>
-          <img className="title" src={blackjackName} height="100" />
+          <img className="title" src={blackjackName} height="105" />
         </header>
         <h1>{this.state.gameResults}</h1>
         <section className="controls">
           <button
             onClick={() => this.dealCard(1, 'player', 'playerScore')}
-            className="button"
+            className={this.playing()}
           >
             HIT
           </button>
-          <button className="button" onClick={() => this.stayButton()}>
+          <button className={this.playing()} onClick={() => this.stayButton()}>
             STAY
+          </button>
+          <button className={this.notPlaying()} onClick={this.newGame}>
+            NEW GAME?
           </button>
         </section>
         <section className="scores">
